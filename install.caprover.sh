@@ -30,11 +30,12 @@ fi
 
 git reset --hard
 git clean -f
-git pull origin staging
+git pull origin test-deploy
 
 export $(cat docker/.env | xargs)
 
 echo
 echo "Build and deploy to CapRover..."
-docker build --build-arg REACT_APP_TG_API_ID=$TG_API_ID --build-arg REACT_APP_TG_API_HASH=$TG_API_HASH -t myapp .
-caprover deploy --appName myapp --imageName myapp
+docker build --build-arg REACT_APP_TG_API_ID=$TG_API_ID --build-arg REACT_APP_TG_API_HASH=$TG_API_HASH -t $IMAGE_NAME .
+docker push $IMAGE_NAME
+caprover deploy --appName $APP_NAME --imageName $IMAGE_NAME
